@@ -1,12 +1,6 @@
 __pycache__
 libyiban/__pycache__
 
-# Sorry but these are not for public release.
-quiz.py
-quiz_db.json
-solitaire.py
-libyiban/auth_dhu.py
-libyiban/idiom.py
-libyiban/xinhua.py
-libyiban/xinhuaex.py
+# Sorry but things from my personal research are not for public release.
+private
 

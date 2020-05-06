@@ -1,10 +1,6 @@
-#__init__.py: Library declaration.
+# __init__.py: Library declarations.
 
 __all__ = [
-  #"idiom",
-  #"xinhua",
-  #"xinhuaex",
-  #"auth_dhu",
   "article",
   "auth",
   "misc"
