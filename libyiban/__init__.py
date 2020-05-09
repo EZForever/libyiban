@@ -1,11 +1,12 @@
-# __init__.py: Library declarations.
+__version__ = 'v1.0.5 Indev Rewrite2'
 
 __all__ = [
-  "article",
-  "auth",
-  "misc"
+    'YiBanAccount',
+    'YiBanGroup',
+    'YiBanArticle'
 ]
 
-for sModule in __all__:
-    __import__("libyiban." + sModule)
+from .YiBanAccount import YiBanAccount
+from .YiBanGroup import YiBanGroup
+from .YiBanArticle import YiBanArticle
 
