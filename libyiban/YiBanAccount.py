@@ -9,8 +9,16 @@ import io
 from .YiBanGroup import YiBanGroup
 
 class YiBanAccount:
+    '''
+    Handles user operations, provides factory for YiBanGroup.
+    '''
     
     def __init__(self, username = None, password = None):
+        '''
+        Initiate a new YiBanAccount instance.
+            username - User name. If omitted, prompts for user input.
+            password - Password. If omitted, prompts for user input.
+        '''
         self.__refcnt = 0
         self.session = None
         
@@ -92,17 +100,33 @@ class YiBanAccount:
             self.__real_logout()
     
     def login(self):
+        '''
+        Force libyiban to login immediately.
+        libyiban will try to login IFF user invoke the account instance with
+        a `with` block by default.
+        User must call logout() before the account instance fall out of scope.
+        '''
         self.__addref()
     
     def logout(self):
+        '''
+        Used in conjunction with login().
+        '''
         self.__release()
     
     def checkin(self):
+        '''
+        Perform daily check-in.
+        NOTE: This won't give you as much exp as answering the daily question.
+        '''
         self.__assert_logged_in()
         print('[I][Account] Checking in...')
         self.session.post('/ajax/checkin/answer?optionid[]=6713')
     
     def get_groups(self):
+        '''
+        Get an iterator for (name, YiBanGroup) tuples.
+        '''
         self.__assert_logged_in()
         req_group = self.session.get('/my/group')
         for gid, puid, name in re.findall('<a href="/newgroup/indexPub/group_id/(\d+)/puid/(\d+)"><span>(.*?)</span></a>', req_group.text):

@@ -3,8 +3,19 @@ import re
 from .YiBanArticle import YiBanArticle
 
 class YiBanGroup:
+    '''
+    Handles group operations, provides factory for YiBanArticle.
+    User should not create YiBanGroup instances manually;
+    use YiBanAccount.get_groups() instead.
+    '''
     
     def __init__(self, account, puid, gid):
+        '''
+        Initiate a new YiBanGroup instance.
+            account - A YiBanAccount instance as the accessing identity.
+            puid - The group's PUID, as seen in the URL.
+            gid - The group's Group ID, as seen in the URL.
+        '''
         self.puid = puid
         self.gid = gid
         
@@ -28,6 +39,9 @@ class YiBanGroup:
         return int(req.json()["data"]["channel_id"])
     
     def get_egpa(self):
+        '''
+        Get the group's EGPA value as a float number.
+        '''
         print('[I][Group] Getting EGPA value for %d:%d...' % (self.puid, self.gid))
         req = self.account.session.get('/newgroup/indexPub/group_id/%d/puid/%d' % (gid, puid))
         re_egpa = re.search('EGPA：(.*)<', req.text) # sic; note that full-width colon
@@ -35,6 +49,9 @@ class YiBanGroup:
         return float(re_egpa.group(1))
     
     def get_articles(self, count):
+        '''
+        Get an iterator for (title, YiBanArticle) tuples.
+        '''
         req = self.account.session.post('/forum/article/listAjax', data = {
             'puid': self.puid,
             'group_id': self.gid,
@@ -50,6 +67,12 @@ class YiBanGroup:
             yield (item['title'], YiBanArticle(self.account, self.puid, self.cid, int(item['id'])))
     
     def new_article(self, title, content):
+        '''
+        Post a new article as the given identity.
+            title - New article's title.
+            content - New article's content, in raw HTML.
+        Returns a (title, YiBanArticle) tuple.
+        '''
         print('[I][Group] Post article w/ title "%s"' % title)
         req = self.account.session.post('/forum/article/addAjax', data = {
             'puid': self.puid,
