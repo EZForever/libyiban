@@ -43,7 +43,7 @@ class YiBanGroup:
         Get the group's EGPA value as a float number.
         '''
         print('[I][Group] Getting EGPA value for %d:%d...' % (self.puid, self.gid))
-        req = self.account.session.get('/newgroup/indexPub/group_id/%d/puid/%d' % (gid, puid))
+        req = self.account.session.get('/newgroup/indexPub/group_id/%d/puid/%d' % (self.gid, self.puid))
         re_egpa = re.search('EGPA：(.*)<', req.text) # sic; note that full-width colon
         assert re_egpa, '[E][Group] EGPA value not found'
         return float(re_egpa.group(1))
@@ -85,5 +85,5 @@ class YiBanGroup:
         req_json = req.json()
         assert req_json['code'] == 200, '[E][Group] Post article failed: ' + req.text
         url_parts = req_json['data']['link'].split('/')
-        return (title, YiBanArticle(self.account, self.puid, self.cid, int(aElems[5])))
+        return (title, YiBanArticle(self.account, self.puid, self.cid, int(url_parts[5])))
 
