@@ -14,8 +14,8 @@ with open('demo2_index.htm', 'r') as f:
     INDEX_CONTENT = f.read()
 
 app = flask.Flask(__name__)
-account = libyiban.YiBanAccount()
-commenter = libyiban_ex.QAppCommenter(account, QAPP_ID)
+with libyiban.YiBanAccount() as account:
+    commenter = libyiban_ex.QAppCommenter(account, QAPP_ID)
 
 @app.route('/')
 def route_index():
@@ -36,10 +36,11 @@ def route_api_zmpush():
     if req_data['token'] != CTFD_TOKEN:
         flask.abort(403)
     commenter.new_comment(req_data['ctf_message'])
-    return {}
+    return ''
 
 def main():
-    app.run(debug = True, host = '127.0.0.1', port = 3457)
+    #app.run(debug = True, host = '127.0.0.1', port = 3457)
+    app.run(use_reloader = False, host = '127.0.0.1', port = 3457)
     return 0
 
 if __name__ == '__main__':
