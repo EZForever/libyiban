@@ -4,9 +4,11 @@ __author__ = 'Eric Zhang (EZForever), https://github.com/EZForever'
 
 __all__ = [
     'IdiomSolitaire',
+    'QAppCommenter',
     'XinHuaNews'
 ]
 
 from .IdiomSolitaire import IdiomSolitaire
+from .QAppCommenter import QAppCommenter
 import libyiban_ex.XinHuaNews
 
